@@ -1,12 +1,15 @@
 import axios from 'axios'
 import { Toast } from 'antd-mobile'
 
-axios.interceptors.request.use(function(config){
-	Toast.loading('加载中',0)
+axios.interceptors.request.use((config) => {
+	Toast.loading('Loading',0)
 	return config
 })
 
-axios.interceptors.response.use(function(config){
+axios.interceptors.response.use((config) => {
 	Toast.hide()
 	return config
+}, (error)=> {
+	Toast.hide()
+	throw error
 })
