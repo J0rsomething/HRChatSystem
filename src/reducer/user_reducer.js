@@ -9,10 +9,10 @@ const initState = {
   redirect_url: '',
   isLogin: false,
   username: '',
-  password: '',
-  password_confirmation: '',
   type: '',
+  id: '',
   error_message: ''
+
 }
 
 //reducer
@@ -75,7 +75,9 @@ const signup = ({username, password, password_confirmation, type}) => {
       type
     }).then(res => {
       if(res.status === 200 && res.data.code === 0) {
-        dispatch(onSignupSuccess({username, password, type}))
+        console.log(res.data.data)
+        //store username, type and id (get from server database)
+        dispatch(onSignupSuccess({username, type, _id: res.data.data._id}))
       } else {
         dispatch(onError(res.data.message))
       }

@@ -21,8 +21,8 @@ class AuthRoute extends React.Component {
     then(res=> {
       if(res.data.code === 0) {
         // login verified
-        console.log('cookie data got: ')
-        console.log(res.data.data)
+        //console.log('cookie data got: ')
+        //console.log(res.data.data)
         this.props.loadData(res.data.data)
       } else {
         //no login data on server

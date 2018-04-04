@@ -1,7 +1,7 @@
 1. state中user改为username
 2. employerinfo改为****profile
 3. 错误信息用的JSS style
-
+4. MongoDB signup时用的是create并返回doc里面的 username type和id，不清楚为什么用save（）
 
 1. 密码不可以明文传输也不可以明文存储，所以在上传时就需要加密
 
@@ -11,7 +11,7 @@
 
 @管理用户
 /user
-  - ／info
+  - ／info 刷新或者重新加载时，通过cookie从后端调取数据获得登录状态
   - ／list 后端查看用户数据
   - ／signup 处理用户注册
   - /login 处理用户登陆

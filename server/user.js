@@ -44,8 +44,10 @@ Router.post('/signup', (req,res) => {
         return res.json({code: 1, message: 'database error'})
       }
       //setup cookie
+      console.log(doc)
+      const {username, type, _id} = doc
       res.cookie('userid', doc._id)
-      return res.json({code: 0})
+      return res.json({code: 0, data: {username, type, _id}})
     })
   })
 })
