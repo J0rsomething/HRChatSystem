@@ -18,7 +18,8 @@ import Signup from './container/signup/signup'
 import AuthRoute from './component/authrouter/authrouter'
 
 const store = createStore(reducers, compose(
-	applyMiddleware(thunk)
+	applyMiddleware(thunk),
+	window.devToolsExtension?window.devToolsExtension():f=>f
 ))
 ReactDom.render(
 	(<Provider store={store}>

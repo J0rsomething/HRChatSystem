@@ -3,6 +3,15 @@ const model = require('./model')
 const User = model.getModel('users')
 const _filter = {password: 0, __v: 0}
 
+
+//show all database
+Router.get('/database', (req,res) => {
+  User.find({}, (error,doc) => {
+    if(!error) {
+      return res.json({doc})
+    }
+  })
+})
 //test
 Router.get('/info', (req,res) => {
   const {userid} = req.cookies

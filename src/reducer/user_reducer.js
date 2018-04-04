@@ -3,6 +3,7 @@ import {redirect} from '../utility'
 
 const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+const LOAD_DATA = 'LOAD_DATA'
 const ERROR = 'ERROR'
 const initState = {
   redirect_url: '',
@@ -22,6 +23,8 @@ const user = (state=initState, action) => {
       return {...state, ...action.data, isLogin: true, redirect_url: redirect(action.data)}
     case LOGIN_SUCCESS:
       return {...state, ...action.data, isLogin: true, redirect_url: redirect(action.data)}
+    case LOAD_DATA:
+      return {...state, ...action.data, isLogin: true}
     case ERROR:
       //when signup error
       return {...state, error_message: action.error_message, isLogin: false,redirect_url: ''}
@@ -46,7 +49,17 @@ const onLoginSuccess = (data) => ({
   data
 })
 
+const onLoadData = (user_info) => ({
+  type: LOAD_DATA,
+  data: user_info
+})
+
+
 //functions
+
+const loadData = user_info => {
+  return dispatch => {dispatch(onLoadData(user_info))}
+}
 const signup = ({username, password, password_confirmation, type}) => {
   //validations
   if(!username || !password || !password_confirmation) {
@@ -88,4 +101,7 @@ const login = ({username, password}) => {
     }).catch(error => dispatch(onError(error.response.status + ' ' + error.response.statusText)))
   }
 }
-export {login, signup, user}
+
+
+
+export {login, signup, loadData, user}
