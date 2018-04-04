@@ -1,8 +1,11 @@
 import axios from 'axios'
+import {redirect} from '../utility'
 
 const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
-const SIGNUP_ERROR = 'SIGNUP_ERROR'
+const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+const ERROR = 'ERROR'
 const initState = {
+  redirect_url: '',
   isLogin: false,
   username: '',
   password: '',
@@ -16,26 +19,34 @@ const user = (state=initState, action) => {
   switch(action.type) {
     case SIGNUP_SUCCESS:
       //when signup successful, update state
-      return {...state, ...action.data, isLogin: true}
-    case SIGNUP_ERROR:
+      return {...state, ...action.data, isLogin: true, redirect_url: redirect(action.data)}
+    case LOGIN_SUCCESS:
+      return {...state, ...action.data, isLogin: true, redirect_url: redirect(action.data)}
+    case ERROR:
       //when signup error
-      return {...state, error_message: action.error_message, isLogin: false}
+      return {...state, error_message: action.error_message, isLogin: false,redirect_url: ''}
     default:
       return state
   }
 }
 
+//action creaters
 const onError = (error_message) => ({
-  type: SIGNUP_ERROR,
+  type: ERROR,
   error_message
 })
 
-const onSuccess = (data) => ({
+const onSignupSuccess = (data) => ({
   type: SIGNUP_SUCCESS,
   data
-
 })
 
+const onLoginSuccess = (data) => ({
+  type: LOGIN_SUCCESS,
+  data
+})
+
+//functions
 const signup = ({username, password, password_confirmation, type}) => {
   //validations
   if(!username || !password || !password_confirmation) {
@@ -51,13 +62,30 @@ const signup = ({username, password, password_confirmation, type}) => {
       type
     }).then(res => {
       if(res.status === 200 && res.data.code === 0) {
-        dispatch(onSuccess({username, password, type}))
+        dispatch(onSignupSuccess({username, password, type}))
       } else {
-        dispatch(onError(res.data.error_message))
+        dispatch(onError(res.data.message))
       }
     }).catch(error=>{
       dispatch(onError(error.response.status + ' ' + error.response.statusText))
     })
   }
 }
-export {signup, user}
+
+const login = ({username, password}) => {
+  if(!username || !password) {
+    return onError('Invalid Username or Password')
+  }
+  return dispatch => {
+    axios.post('/user/login', {username, password}).
+    then(res => {
+      if(res.status === 200 && res.data.code === 0) {
+        console.log(res.data.data)
+        dispatch(onLoginSuccess(res.data.data))
+      } else {
+        dispatch(onError(res.data.message))
+      }
+    }).catch(error => dispatch(onError(error.response.status + ' ' + error.response.statusText)))
+  }
+}
+export {login, signup, user}

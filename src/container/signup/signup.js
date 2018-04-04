@@ -11,9 +11,10 @@ import {
 
 import {connect} from 'react-redux'
 import {signup}from '../../reducer/user_reducer'
+import {Redirect} from 'react-router-dom'
 
 const mapStatetoProps = (state, ownProps) => ({
-  state: state.user
+  user: state.user
 })
 
 const mapDispatchtoProps = ({
@@ -49,9 +50,13 @@ class Signup extends React.Component {
   render() {
     return (
       <div>
+        {
+          this.props.user.redirect_url? <Redirect to={this.props.user.redirect_url}/>: null
+          //console.log(this.props)
+        }
         <Logo></Logo>
         <List>
-          {this.props.state.error_message? <p>{this.props.state.error_message}</p>: null}
+          {this.props.user.error_message? <p style={{color: 'red'}}>{this.props.user.error_message}</p>: null}
           <InputItem onChange={(value)=>{this._handleChange('username',value)}}>Username</InputItem>
           <InputItem onChange={(value)=>{this._handleChange('password',value)}}>Password</InputItem>
           <InputItem onChange={(value)=>{this._handleChange('password_confirmation',value)}}>Pwd_Conf</InputItem>
