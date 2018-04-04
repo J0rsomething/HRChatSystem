@@ -13,6 +13,7 @@ import {
 import reducers from './reducer'
 import './config'
 
+import EmployerProfile from  './container/employer_profile/employer_profile'
 import Login from './container/login/login'
 import Signup from './container/signup/signup'
 import AuthRoute from './component/authrouter/authrouter'
@@ -26,7 +27,7 @@ ReactDom.render(
 		<BrowserRouter>
 			<div>
 
-				<Route path='/' exact component={()=>(<h1>INDEX</h1>)}></Route>
+				<Route path='/employer_profile' component={EmployerProfile}></Route>
 				<Route path='/login' component={Login}></Route>
 				<Route path='/signup' component={Signup}></Route>
 				<AuthRoute></AuthRoute>
