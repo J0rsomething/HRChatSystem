@@ -1,6 +1,9 @@
 import React from 'react'
 import {Grid, List} from 'antd-mobile'
-//import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
+
+
+
 
 const avatar_list = 'boy,girl,man,woman,bull,chick,crab,hedgehog,hippopotamus,koala,lemur,pig,tiger,whale,zebra'
                     .split(',')
@@ -19,7 +22,6 @@ const grid_header = (selected) => {
 
 const Avatar = ({selectAvatar,selected_avatar}) => (
   <div>
-    {console.log(selected_avatar)}
     <List renderHeader={()=>grid_header(selected_avatar)}>
       <Grid
         data={avatar_list}
@@ -31,5 +33,9 @@ const Avatar = ({selectAvatar,selected_avatar}) => (
     </List>
   </div>
 )
+
+Avatar.propTypes = {
+  selectAvatar: PropTypes.func.isRequired
+}
 
 export default Avatar

@@ -13,7 +13,7 @@ class AuthRoute extends React.Component {
     //browser shouldn't redirect when user trys to reach '/login' or '/signup'
     //regardless of login status
     const no_redirect_list = ['/login', '/signup']
-    const pathname = this.props.history.pathname
+    const pathname = this.props.location.pathname //or this.props.history.path
     if(no_redirect_list.indexOf(pathname)>-1) {
       return null
     }
@@ -21,14 +21,11 @@ class AuthRoute extends React.Component {
     then(res=> {
       if(res.data.code === 0) {
         // login verified
-        //console.log('cookie data got: ')
-        //console.log(res.data.data)
         this.props.loadData(res.data.data)
       } else {
         //no login data on server
         this.props.history.push('/login')
       }
-
     })
   }
   render() {

@@ -12,13 +12,11 @@ const mapDispatchtoProps = ({
   updateData
 })
 
-class EmployerProfile extends React.Component {
+class EmployeeProfile extends React.Component {
   constructor() {
     super()
     this.state = {
       title: '',
-      company: '',
-      salary: '',
       description: '',
       avatar: ''
     }
@@ -40,23 +38,17 @@ class EmployerProfile extends React.Component {
         <NavBar
           mode="light"
           onLeftClick={() => console.log('onLeftClick')}>
-          Employer Profile
+          Employee Profile
         </NavBar>
         <Avatar
           selectAvatar={(value)=>this.setState({avatar: value})}
           selected_avatar={this.state.avatar}/>
         <InputItem onChange={(value)=>this._handleChange('title', value)}>
-          Position
-        </InputItem>
-        <InputItem onChange={(value)=>this._handleChange('company', value)}>
-          Firm Name
-        </InputItem>
-        <InputItem onChange={(value)=>this._handleChange('salary', value)}>
-          Salary
+          Wish:
         </InputItem>
         <TextareaItem
           onChange={(value)=>this._handleChange('description', value)}
-          title={'Description'}
+          title={'Resumé'}
           row={2}
           autoHeight={true}/>
         <Button type='primary' onClick={() => this.props.updateData(this.state)}>Update</Button>
@@ -66,7 +58,7 @@ class EmployerProfile extends React.Component {
 }
 
 
-export default  connect(
+export default connect(
   mapStatetoProps,
   mapDispatchtoProps
-)(EmployerProfile)
+)(EmployeeProfile)

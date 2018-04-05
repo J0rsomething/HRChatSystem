@@ -13,7 +13,8 @@ import {
 import reducers from './reducer'
 import './config'
 
-import EmployerProfile from  './container/employer_profile/employer_profile'
+import EmployerProfile from './container/employer_profile/employer_profile'
+import EmployeeProfile from './container/employee_profile/employee_profile'
 import Login from './container/login/login'
 import Signup from './container/signup/signup'
 import AuthRoute from './component/authrouter/authrouter'
@@ -26,11 +27,11 @@ ReactDom.render(
 	(<Provider store={store}>
 		<BrowserRouter>
 			<div>
-
+				<AuthRoute></AuthRoute>
 				<Route path='/employer_profile' component={EmployerProfile}></Route>
+				<Route path='/employee_profile' component={EmployeeProfile}></Route>
 				<Route path='/login' component={Login}></Route>
 				<Route path='/signup' component={Signup}></Route>
-				<AuthRoute></AuthRoute>
 			</div>
 		</BrowserRouter>
 	</Provider>),

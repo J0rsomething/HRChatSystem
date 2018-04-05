@@ -1,33 +1,27 @@
 import axios from 'axios'
 import {redirect} from '../utility'
 
-const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+const AUTHENTICATE_SUCCESS = 'AUTHENTICATE_SUCCESS'
 const LOAD_DATA = 'LOAD_DATA'
 const ERROR = 'ERROR'
 const initState = {
   redirect_url: '',
-  isLogin: false,
   username: '',
   type: '',
-  id: '',
+  _id: '',
   error_message: ''
-
 }
 
 //reducer
 const user = (state=initState, action) => {
   switch(action.type) {
-    case SIGNUP_SUCCESS:
-      //when signup successful, update state
-      return {...state, ...action.data, isLogin: true, redirect_url: redirect(action.data)}
-    case LOGIN_SUCCESS:
-      return {...state, ...action.data, isLogin: true, redirect_url: redirect(action.data)}
+    case AUTHENTICATE_SUCCESS:
+      return {...state, ...action.data, redirect_url: redirect(action.data)}
     case LOAD_DATA:
-      return {...state, ...action.data, isLogin: true}
+      return {...state, ...action.data}
     case ERROR:
       //when signup error
-      return {...state, error_message: action.error_message, isLogin: false,redirect_url: ''}
+      return {...state, error_message: action.error_message,redirect_url: ''}
     default:
       return state
   }
@@ -39,13 +33,8 @@ const onError = (error_message) => ({
   error_message
 })
 
-const onSignupSuccess = (data) => ({
-  type: SIGNUP_SUCCESS,
-  data
-})
-
-const onLoginSuccess = (data) => ({
-  type: LOGIN_SUCCESS,
+const onAuthenticateSuccess = data => ({
+  type: AUTHENTICATE_SUCCESS,
   data
 })
 
@@ -56,7 +45,22 @@ const onLoadData = (user_info) => ({
 
 
 //functions
-
+const updateData = data => {
+  return dispatch => {
+    axios.post('/user/update', data).
+    then(res => {
+      if(res.status === 200 && res.data.code === 0) {
+        console.log(res.data.data)
+        dispatch(onAuthenticateSuccess(res.data.data))
+      } else {
+        dispatch(onError(res.data.message))
+      }
+    }).
+    catch(error => {
+      dispatch(onError(error.response.status + ' ' + error.response.statusText))
+    })
+  }
+}
 const loadData = user_info => {
   return dispatch => {dispatch(onLoadData(user_info))}
 }
@@ -77,7 +81,7 @@ const signup = ({username, password, password_confirmation, type}) => {
       if(res.status === 200 && res.data.code === 0) {
         console.log(res.data.data)
         //store username, type and id (get from server database)
-        dispatch(onSignupSuccess({username, type, _id: res.data.data._id}))
+        dispatch(onAuthenticateSuccess({username, type, _id: res.data.data._id}))
       } else {
         dispatch(onError(res.data.message))
       }
@@ -96,7 +100,7 @@ const login = ({username, password}) => {
     then(res => {
       if(res.status === 200 && res.data.code === 0) {
         console.log(res.data.data)
-        dispatch(onLoginSuccess(res.data.data))
+        dispatch(onAuthenticateSuccess(res.data.data))
       } else {
         dispatch(onError(res.data.message))
       }
@@ -106,4 +110,4 @@ const login = ({username, password}) => {
 
 
 
-export {login, signup, loadData, user}
+export {login, signup, loadData, user, updateData}

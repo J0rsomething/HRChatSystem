@@ -13,6 +13,26 @@ Router.get('/database', (req,res) => {
   })
 })
 //test
+
+
+//APIs
+Router.post('/update', (req,res) => {
+  const userid = req.cookies.userid
+
+  if(!userid) {
+    return res.json({code: 1})
+  }
+  const body = req.body
+  console.log(body)
+  User.findByIdAndUpdate(userid, body, (error, doc) => {
+    
+    const data = Object.assign({}, {
+      username: doc.username,
+      type: doc.type
+    }, body)
+    return res.json({code: 0, data})
+  })
+})
 Router.get('/info', (req,res) => {
   const {userid} = req.cookies
   if(!userid) {
@@ -27,8 +47,6 @@ Router.get('/info', (req,res) => {
     }
   })
 })
-
-//APIs
 Router.get('/list', (req,res) => {
   User.find({}, (err, doc) => res.json(doc))
 })
