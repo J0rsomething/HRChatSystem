@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {TabBar, NavBar} from 'antd-mobile'
 import NavList from '../../component/navlist/navlist'
-
+import {Route, Switch} from 'react-router-dom'
 const mapStateToProps = state => ({
   user: state.user
 })
@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
     if(this.props.user.type !== newProps.user.type) {
       this.setState({
         type: newProps.user.type,
-        current_tab: newProps.user.type == 'Employer'? 'Employee': 'Employer'
+        current_tab: this.props.location.pathname
       })
     }
   }
@@ -68,7 +68,7 @@ class Dashboard extends React.Component {
 				text:'Me',
 				icon:'user',
 				title:'Me',
-				component:<h1>About Me</h1>
+				component: <h1>About Me</h1>
 			}
 		].filter(item=>!item.hide)
     return(
@@ -78,7 +78,13 @@ class Dashboard extends React.Component {
           mode='dard'>
           {navList.find(v=>v.path===pathname).title}
         </NavBar>
-        <h1>BODY AREA</h1>
+        <div style={{marginTop:'45px'}}>
+          <Switch>
+            {navList.map((item)=>(
+                <Route key={item.text} path={item.path} component={()=> item.component}></Route>))
+            }
+          </Switch>
+        </div>
         <NavList
           data={navList}
           currentTab={this.state.current_tab}

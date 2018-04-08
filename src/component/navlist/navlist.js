@@ -16,19 +16,14 @@ const NavList = ({data, currentTab, onPress, history}) => (
                 key={item.text}
                 icon={{uri: require(`./img/${item.text}.png`)}}
                 selectedIcon={{uri: require(`./img/${item.text}-active.png`)}}
-                selected={currentTab == item.text}
-                //badge={1}
+                selected={currentTab == item.path}
                 onPress={()=>{
                   history.push(item.path)
-                  onPress(item.text
-                )}}
-                //data-seed="logId"
-              >
-              {item.component}
-              </TabBar.Item>)
+                  onPress(item.path)
+                }}
+              />)
             }
-
-          </TabBar>: <div></div> 
+          </TabBar>: <div></div>
     }
 
   </div>
