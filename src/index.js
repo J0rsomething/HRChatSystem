@@ -3,6 +3,7 @@ import ReactDom from 'react-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
+import './index.css'
 import {
 	BrowserRouter,
 	Route,
@@ -18,6 +19,7 @@ import EmployeeProfile from './container/employee_profile/employee_profile'
 import Login from './container/login/login'
 import Signup from './container/signup/signup'
 import AuthRoute from './component/authrouter/authrouter'
+import Dashboard from './container/dashboard/dashborad'
 
 const store = createStore(reducers, compose(
 	applyMiddleware(thunk),
@@ -28,10 +30,16 @@ ReactDom.render(
 		<BrowserRouter>
 			<div>
 				<AuthRoute></AuthRoute>
-				<Route path='/employer_profile' component={EmployerProfile}></Route>
-				<Route path='/employee_profile' component={EmployeeProfile}></Route>
-				<Route path='/login' component={Login}></Route>
-				<Route path='/signup' component={Signup}></Route>
+				<Switch>
+					<Route path='/employer_profile' component={EmployerProfile}></Route>
+					<Route path='/employee_profile' component={EmployeeProfile}></Route>
+					<Route path='/login' component={Login}></Route>
+					<Route path='/signup' component={Signup}></Route>
+					<Route component={Dashboard}>
+
+					</Route>
+				</Switch>
+
 			</div>
 		</BrowserRouter>
 	</Provider>),
