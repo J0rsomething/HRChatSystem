@@ -25,7 +25,7 @@ Router.post('/update', (req,res) => {
   const body = req.body
   console.log(body)
   User.findByIdAndUpdate(userid, body, (error, doc) => {
-    
+
     const data = Object.assign({}, {
       username: doc.username,
       type: doc.type
@@ -48,7 +48,16 @@ Router.get('/info', (req,res) => {
   })
 })
 Router.get('/list', (req,res) => {
-  User.find({}, (err, doc) => res.json(doc))
+  const {type} = req.query
+
+  User.find({type}, _filter, (err, doc) => {
+    if(err) {
+      return res.json({code:1, message: 'Database Error'})
+    }
+    if(doc) {
+      return res.json({code: 0, data: doc})
+    }
+  })
 })
 Router.post('/signup', (req,res) => {
   console.log(req.body)

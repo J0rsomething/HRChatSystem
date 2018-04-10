@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {TabBar, NavBar} from 'antd-mobile'
 import NavList from '../../component/navlist/navlist'
+import Employer from '../employer/employer'
 import {Route, Switch} from 'react-router-dom'
 const mapStateToProps = state => ({
   user: state.user
@@ -44,7 +45,7 @@ class Dashboard extends React.Component {
 				icon:'boss',
         //for heading navbar
 				title:'Employee List',
-				component:<h1>Employee List</h1>,
+				component: Employer,
 				hide:user.type=='Employee'
 			},
 			{
@@ -53,7 +54,7 @@ class Dashboard extends React.Component {
 				text:'Employer',
 				icon:'job',
 				title:'Employer List',
-				component:<h1>Employer List</h1>,
+				component:()=><h1>Employer List</h1>,
 				hide:user.type == 'Employer'
 			},
 			{
@@ -61,14 +62,14 @@ class Dashboard extends React.Component {
 				text:'Message',
 				icon:'msg',
 				title:'Message',
-				component:<h1>Messages Chat</h1>
+				component:()=><h1>Messages Chat</h1>
 			},
 			{
 				path:'/me',
 				text:'Me',
 				icon:'user',
 				title:'Me',
-				component: <h1>About Me</h1>
+				component: ()=><h1>About Me</h1>
 			}
 		].filter(item=>!item.hide)
     return(
@@ -76,12 +77,12 @@ class Dashboard extends React.Component {
         <NavBar
           className='fixd-header'
           mode='dard'>
-          {navList.find(v=>v.path===pathname).title}
+          {navList.find(v=>v.path==pathname).title}
         </NavBar>
         <div style={{marginTop:'45px'}}>
           <Switch>
             {navList.map((item)=>(
-                <Route key={item.text} path={item.path} component={()=> item.component}></Route>))
+                <Route key={item.text} path={item.path} component={item.component}></Route>))
             }
           </Switch>
         </div>
