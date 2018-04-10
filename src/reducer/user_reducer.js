@@ -4,6 +4,7 @@ import {redirect} from '../utility'
 const AUTHENTICATE_SUCCESS = 'AUTHENTICATE_SUCCESS'
 const LOAD_DATA = 'LOAD_DATA'
 const ERROR = 'ERROR'
+const LOGOUT = 'LOGOUT'
 const initState = {
   redirect_url: '',
   username: '',
@@ -22,6 +23,8 @@ const user = (state=initState, action) => {
     case ERROR:
       //when signup error
       return {...state, error_message: action.error_message,redirect_url: ''}
+    case LOGOUT:
+      return {...initState, redirect_url: '/login'}
     default:
       return state
   }
@@ -41,6 +44,10 @@ const onAuthenticateSuccess = data => ({
 const onLoadData = (user_info) => ({
   type: LOAD_DATA,
   data: user_info
+})
+
+const logout = () => ({
+  type: LOGOUT
 })
 
 
@@ -110,4 +117,5 @@ const login = ({username, password}) => {
 
 
 
-export {login, signup, loadData, user, updateData}
+
+export {login, signup, loadData, user, updateData, logout}

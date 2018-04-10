@@ -31,6 +31,7 @@ ReactDom.render(
 			<div>
 				<AuthRoute></AuthRoute>
 				<Switch>
+					<Route path='/' exact component={()=><Redirect to='/login'></Redirect>}></Route>
 					<Route path='/employer_profile' component={EmployerProfile}></Route>
 					<Route path='/employee_profile' component={EmployeeProfile}></Route>
 					<Route path='/login' component={Login}></Route>

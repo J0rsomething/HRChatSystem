@@ -2,8 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {TabBar, NavBar} from 'antd-mobile'
 import NavList from '../../component/navlist/navlist'
-import Employer from '../employer/employer'
+import Employer from '../../component/employer/employer'
+import Employee from '../../component/employee/employee'
 import {Route, Switch} from 'react-router-dom'
+import UserCenter from '../../component/user_center/user_center'
+
 const mapStateToProps = state => ({
   user: state.user
 })
@@ -54,7 +57,7 @@ class Dashboard extends React.Component {
 				text:'Employer',
 				icon:'job',
 				title:'Employer List',
-				component:()=><h1>Employer List</h1>,
+				component:Employee,
 				hide:user.type == 'Employer'
 			},
 			{
@@ -62,14 +65,14 @@ class Dashboard extends React.Component {
 				text:'Message',
 				icon:'msg',
 				title:'Message',
-				component:()=><h1>Messages Chat</h1>
+				component:()=><button onClick={()=>alert('asdf')}>Messages Chat</button>
 			},
 			{
 				path:'/me',
 				text:'Me',
 				icon:'user',
 				title:'Me',
-				component: ()=><h1>About Me</h1>
+				component: UserCenter
 			}
 		].filter(item=>!item.hide)
     return(

@@ -48,7 +48,7 @@ class Login extends React.Component {
     return (
       <div>
         {
-          this.props.user.redirect_url? <Redirect to={this.props.user.redirect_url}/>: null
+          this.props.user.redirect_url&&this.props.user.redirect_url !='/login'? <Redirect to={this.props.user.redirect_url}/>: null
           //console.log(this.props)
         }
         <Logo></Logo>
