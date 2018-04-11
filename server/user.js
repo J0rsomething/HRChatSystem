@@ -1,6 +1,7 @@
 const Router = require('express').Router()
 const model = require('./model')
 const User = model.getModel('users')
+const Chat =  model.getModel('chats')
 const _filter = {password: 0, __v: 0}
 
 
@@ -59,6 +60,17 @@ Router.get('/list', (req,res) => {
     }
   })
 })
+
+Router.get('/message_list', (req, res)=>{
+  const _id = req.cookies.userid
+  // {'$or': [{from: _id, to:_id}]}
+  Chat.find({}, (err, doc) => {
+    if(!err) {
+      return res.json({code:0, data: doc})
+    }
+  })
+})
+
 Router.post('/signup', (req,res) => {
   console.log(req.body)
   const {username, password, type} = req.body
