@@ -1,9 +1,18 @@
 import React from 'react'
 import {TabBar} from 'antd-mobile'
 import {withRouter} from 'react-router-dom'
-const NavList = ({data, currentTab, onPress, history}) => (
+import {connect} from 'react-redux'
+
+
+const mapStateToProps = state => ({
+  chat: state.chat
+})
+const mapDispatchToProps = ({
+
+})
+
+const NavList = ({data, currentTab, onPress, history, chat}) => (
   <div>
-    {currentTab?
       <TabBar
         className='am-tab-bar'
         unselectedTintColor="#949494"
@@ -12,6 +21,7 @@ const NavList = ({data, currentTab, onPress, history}) => (
         {
           data.map(item=>
           <TabBar.Item
+            badge={item.path ==='/message'? chat.unread:0}
             title={item.text}
             key={item.text}
             icon={{uri: require(`./img/${item.text}.png`)}}
@@ -23,9 +33,10 @@ const NavList = ({data, currentTab, onPress, history}) => (
             }}
           />)
         }
-      </TabBar>: <div></div>
-    }
-
+      </TabBar>
   </div>
 )
-export default withRouter(NavList)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(NavList))

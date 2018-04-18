@@ -16,11 +16,15 @@
 	position: fixed;
 	top: 0;
 	width: 100%;
+	z-index: 10;
 }
 .page-content{
 	padding:45px 5px;
 }
 
+#chat-page{
+	margin-bottom: 45px;
+}
 #chat-page .chat-me .am-list-extra{
 	flex-basis:auto;
 }
@@ -32,4 +36,6 @@
 	z-index: 10;
 	position: fixed;
 	bottom: 0;
+	width: 100%;
+	border-top: 1px solid #cccccc
 }

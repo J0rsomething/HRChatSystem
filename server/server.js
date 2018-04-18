@@ -4,14 +4,26 @@ const cookieParser = require('cookie-parser')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+const model = require('./model')
+const Chat =  model.getModel('chats')
 
 //socket.io
 io.on('connection', socket=>{
-	console.log('user login')
+	console.log(`User login: socketID: ${socket.id}`)
 	socket.on('send_message', data=>{
 		console.log(data)
-		io.emit('receive_message',data)
+		const {from, to, content} = data
+		const chat_id = [from, to].sort().join('_')
+		Chat.create({chat_id, from, to, content}, (err,doc) => {
+			console.log(socket)
+			io.emit('receive_message', Object.assign({}, doc._doc))
+		})
 	})
+
+	socket.on('set_userid',(data) => {
+		console.log(`setname: ${data}`)
+    socket.user_ID = data;
+  });
 
 })
 

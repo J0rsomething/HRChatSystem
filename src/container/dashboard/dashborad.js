@@ -6,13 +6,19 @@ import Employer from '../../component/employer/employer'
 import Employee from '../../component/employee/employee'
 import {Route, Switch} from 'react-router-dom'
 import UserCenter from '../../component/user_center/user_center'
-
+import {getMessageList, receiveMessage,setUserId} from '../../reducer/chat_reducer'
+import {getUserList} from '../../reducer/user_list_reducer'
+import Message from '../../component/message/message'
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  chat: state.chat
 })
 
 const mapDispatchToProps = ({
-
+  getMessageList,
+  receiveMessage,
+  setUserId,
+  getUserList
 })
 
 class Dashboard extends React.Component {
@@ -27,11 +33,20 @@ class Dashboard extends React.Component {
   //componentDidMount is executed before /user/info response data,
   //when asyc function get data from server, have to use this func to update state
   componentWillReceiveProps(newProps) {
-    if(this.props.user.type !== newProps.user.type) {
+    if(this.props.user !== newProps.user) {
+      this.props.getUserList(newProps.user.type==='Employer'?'Employee':'Employer')
+      this.props.setUserId(newProps.user._id)
       this.setState({
         type: newProps.user.type,
         current_tab: this.props.location.pathname
       })
+
+    }
+  }
+  componentDidMount() {
+    if(!this.props.chat.chat_message.length) {
+      this.props.getMessageList()
+      this.props.receiveMessage()
     }
   }
 
@@ -65,7 +80,7 @@ class Dashboard extends React.Component {
 				text:'Message',
 				icon:'msg',
 				title:'Message',
-				component:()=><button onClick={()=>alert('asdf')}>Messages Chat</button>
+				component: Message
 			},
 			{
 				path:'/me',
@@ -76,6 +91,7 @@ class Dashboard extends React.Component {
 			}
 		].filter(item=>!item.hide)
     return(
+      this.props.user.type?
       <div>
         <NavBar
           className='fixd-header'
@@ -91,9 +107,10 @@ class Dashboard extends React.Component {
         </div>
         <NavList
           data={navList}
-          currentTab={this.state.current_tab}
+          currentTab={this.props.location.pathname}
           onPress={(value)=>{this.setState({current_tab:value})}}></NavList>
-      </div>)
+      </div>:<div></div>
+    )
   }
 }
 
